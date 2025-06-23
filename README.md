@@ -1,4 +1,6 @@
 # Hotel-Booking-Data-Analysis
+
+
 Main objective of the project
 The aim of this project was to analyze patterns and trends in hotel booking behavior using historical data. Key questions explored included:
 -What factors influence booking cancellations?

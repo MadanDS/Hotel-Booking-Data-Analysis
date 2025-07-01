@@ -54,7 +54,7 @@ The objective of this project is to analyze hotel booking data to uncover patter
   #4.1 Booking Trends
  -Visualized bookings by month using count plot
        
-            ----# Extract month number and name
+            # Extract month number and name
             df['month'] = df['reservation_status_date'].dt.month
             df['month_name'] = df['reservation_status_date'].dt.strftime('%B')
             
@@ -73,19 +73,28 @@ The objective of this project is to analyze hotel booking data to uncover patter
             plt.xticks(rotation=45)
             plt.tight_layout()
             plt.show()
-    -----
+            
             
   -Identified peak seasons: July and August, showing significantly higher booking volumes.
 
-    ----month_adr=df[df['is_canceled']==1].groupby('month')[['adr']].sum().reset_index()
+        month_adr=df[df['is_canceled']==1].groupby('month')[['adr']].sum().reset_index()
         plt.figure(figsize=(5,4))
         plt.title('Adr per month')
         sns.barplot(x='month',y='adr',data=month_adr)
         plt.show()
-    ----
+    
   ##4.2 Cancellation Analysis
   
   -Overall cancellation rate: 37% (approx.)
+
+      canceled_per=df['is_canceled'].value_counts(normalize=True)
+      print(canceled_per)
+      
+      plt.figure(figsize=(5,4))
+      plt.title("Booking cancellations")
+      plt.bar(['Not canceled','Canceled'],df['is_canceled'].value_counts(),width=0.7)
+      plt.show()
+      
   -Higher cancellation rates observed with:
         
   -Longer lead times
@@ -94,17 +103,35 @@ The objective of this project is to analyze hotel booking data to uncover patter
      
   -City Hotels experienced higher cancellation rates than Resort Hotels.
 
+    plt.figure(figsize=(8, 6))
+    sns.countplot(data=df, x='hotel', hue='is_canceled')
+    plt.title('Booking Cancellations by Hotel Type')
+    plt.xlabel('Hotel Type')
+    plt.ylabel('Number of Bookings')
+    plt.legend(title='Canceled', labels=['No', 'Yes'])
+    plt.tight_layout()
+    plt.show()
+
 ##4.3 Customer Segmentation
 
--Top countries by bookings: Portugal, United Kingdom, France, Spain, and Germany.
+-Top 10 countries by bookings: 
+
+    canceled_data=df[df['is_canceled']==1]
+    top_10_country=canceled_data['country'].value_counts()[:10]
+    plt.figure(figsize=(5,5))
+    plt.pie(top_10_country,autopct= '%.2f',labels=top_10_country.index)
+    plt.show()
 
 -Most common booking channels: Online Travel Agents (OTAs) like Expedia and Booking.com.
 
--Cancellations were more frequent among OTA bookings.
+    canceled_data=df[df['is_canceled']==1]
+    canceled_data['market_segment'].value_counts(normalize=True)
+    -Cancellations were more frequent among OTA bookings.
 
 ##4.4 Revenue Insights
 
 -ADR (Average Daily Rate):
+
 
 -Higher for Resort Hotels compared to City Hotels.
 
@@ -128,7 +155,7 @@ The objective of this project is to analyze hotel booking data to uncover patter
 ## 6. Recommendations
 
 - Encourage or require deposits to reduce cancellations.
-- 
+
 -Focus marketing campaigns on off-peak seasons like November–March.
 
 -Segment and prioritize high-value, low-cancellation customer types for retention.
@@ -139,7 +166,7 @@ The objective of this project is to analyze hotel booking data to uncover patter
 ## 7. Future Work
 
 - Build predictive models to estimate cancellation likelihood based on booking features.
-- 
+  
 -Perform sentiment analysis on guest reviews to enhance service and reduce negative feedback.
 
 -Integrate external data like holidays, events, and weather for more accurate demand forecasting.

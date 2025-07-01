@@ -3,6 +3,8 @@
 ##Table of Contents
 
   [Project overview](#project_overview)
+  
+  [Recommendations](#recommandations)
 
 ## 1. Project overview
 
